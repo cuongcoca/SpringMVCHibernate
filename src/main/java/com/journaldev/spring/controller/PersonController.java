@@ -23,6 +23,11 @@ public class PersonController {
 //	public void setPersonService(PersonService ps){
 //		this.personService = ps;
 //	}
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String index() {
+		return "redirect:/persons";
+	}
 	
 	@RequestMapping(value = "/persons", method = RequestMethod.GET)
 	public String listPersons(Model model) {
@@ -56,7 +61,9 @@ public class PersonController {
  
     @RequestMapping("/edit/{id}")
     public String editPerson(@PathVariable("id") int id, Model model){
-        model.addAttribute("person", this.personService.getPersonById(id));
+		Person person = this.personService.getPersonById(id);
+		System.out.println(person);
+        model.addAttribute("person", person);
         model.addAttribute("listPersons", this.personService.listPersons());
         return "person";
     }

@@ -18,8 +18,8 @@ public class PersonDAOImpl implements PersonDAO {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PersonDAOImpl.class);
 
-//	@Autowired
-	@Qualifier(value = "sessionFactory")
+	@Autowired
+//	@Qualifier(value = "sessionFactory")
 	private SessionFactory sessionFactory;
 
 	@Override
@@ -49,8 +49,9 @@ public class PersonDAOImpl implements PersonDAO {
 
 	@Override
 	public Person getPersonById(int id) {
-		Session session = this.sessionFactory.getCurrentSession();		
-		Person p = (Person) session.load(Person.class, id);
+		Session session = this.sessionFactory.getCurrentSession();
+		Person p = (Person) session.load(Person.class, new Integer(id));
+		System.out.println(p);
 		return p;
 	}
 
@@ -68,7 +69,7 @@ public class PersonDAOImpl implements PersonDAO {
 	public List<Person> getAllPerson() {
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = session.createSQLQuery("select * from PERSON").addEntity(Person.class);
-		query.setFirstResult(0).setMaxResults(1);
+//		query.setFirstResult(0).setMaxResults(1);
 
 		List<Person> list = query.list();
 
