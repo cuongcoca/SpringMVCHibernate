@@ -38,11 +38,7 @@
 	<beans:bean id="hibernate4AnnotatedSessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<beans:property name="dataSource" ref="dataSource" />
-		<beans:property name="annotatedClasses">
-			<beans:list>
-				<beans:value>com.journaldev.spring.model.Person</beans:value>
-			</beans:list>
-		</beans:property>
+		<beans:property name="packagesToScan" value="com.coca.model" />
 		<beans:property name="hibernateProperties">
 			<beans:props>
 				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
@@ -52,7 +48,7 @@
 		</beans:property>
 	</beans:bean>
 
-	<context:component-scan base-package="com.journaldev.spring" />
+	<context:component-scan base-package="com.coca" />
 	
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
