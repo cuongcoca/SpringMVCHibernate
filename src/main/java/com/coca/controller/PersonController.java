@@ -15,11 +15,6 @@ public class PersonController {
 
 	@Autowired
 	private PersonService personService;
-
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String index() {
-		return "redirect:/persons";
-	}
 	
 	@RequestMapping(value = "/persons", method = RequestMethod.GET)
 	public String listPersons(Model model) {
