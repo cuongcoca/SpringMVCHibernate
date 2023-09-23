@@ -21,7 +21,7 @@ app.controller('myCtrl', function ($scope, $http) {
                 if (response.data == 1) {
                     console.log("add success!");
                 } else {
-                    console.log("add faild!");
+                    console.log("add failed!");
                 }
                 $scope.loadListData();
             }

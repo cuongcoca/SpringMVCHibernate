@@ -48,6 +48,10 @@
 		</beans:property>
 	</beans:bean>
 
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="268435456"/>
+	</beans:bean>
+
 	<context:component-scan base-package="com.coca" />
 	
 	<tx:annotation-driven transaction-manager="transactionManager"/>
