@@ -3,6 +3,7 @@ package com.coca.controller.admin;
 import com.coca.dao.CommonDAO;
 import com.coca.model.ImageUpload;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,15 @@ public class UploadFileController {
     @ResponseBody
     public ResponseEntity search(){
         List<ImageUpload> list = commonDAO.getAll(ImageUpload.class);
+        for(ImageUpload imageUpload : list){//show Img
+            try {
+                byte[] fileContent = FileUtils.readFileToByteArray(new File(imageUpload.getUrl()));
+                byte[] encodedByte = Base64.encodeBase64(fileContent);
+                imageUpload.setBase64Img(new String(encodedByte));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
@@ -42,7 +52,7 @@ public class UploadFileController {
             boolean checkUploadSuccess = false;
             String fileName = String.format("%s_%s", new Date().getTime(), file.getOriginalFilename());
             try {
-                byte[] bytes = file.getBytes();
+//                byte[] bytes = file.getBytes();
 
                 byte[] image = Base64.encodeBase64(file.getBytes());
                 String imageBase64 = new String(image);
@@ -60,7 +70,6 @@ public class UploadFileController {
                 stream.write(imageBytes);
                 stream.close();
 
-                uploadFile.setBase64Img(imageBase64);
                 checkUploadSuccess = true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -76,7 +85,7 @@ public class UploadFileController {
                 commonDAO.save(uploadFile);
             }
         }
-        return "upload/index";
+        return "redirect:/upload-file/index.html";
     }
 
 }
