@@ -29,9 +29,6 @@ public class ImageUpload {
     @Column(name = "GEN_DATE")
     private Date genDate;
 
-    @Column(name = "LAST_UPDATED")
-    private Date lastUpdated;
-
     @Transient
     private String base64Img;
 
