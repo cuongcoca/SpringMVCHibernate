@@ -49,35 +49,11 @@ public class UploadFileController {
         ImageUpload uploadFile = new ImageUpload();
 
         if (!file.isEmpty()) {
-            boolean checkUploadSuccess = false;
-            String fileName = String.format("%s_%s", new Date().getTime(), file.getOriginalFilename());
-            try {
-//                byte[] bytes = file.getBytes();
+            String urlUpload = uploadFileBase64(pathFile, file);
 
-                byte[] image = Base64.encodeBase64(file.getBytes());
-                String imageBase64 = new String(image);
-                byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(imageBase64);
-
-                // Creating the directory to store file
-                File dir = new File(pathFile);
-                if (!dir.exists())
-                    dir.mkdirs();
-
-                // Create the file on server
-                File serverFile = new File(pathFile + fileName);
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-//                stream.write(bytes);
-                stream.write(imageBytes);
-                stream.close();
-
-                checkUploadSuccess = true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if(checkUploadSuccess){
+            if(!urlUpload.equals("false")){
                 uploadFile.setFileName(file.getOriginalFilename());
-                uploadFile.setUrl(pathFile + fileName);
+                uploadFile.setUrl(urlUpload);
                 uploadFile.setUserId(1L);
                 uploadFile.setProductId(1L);
                 uploadFile.setGenDate(new Date());
@@ -86,6 +62,54 @@ public class UploadFileController {
             }
         }
         return "redirect:/upload-file/index.html";
+    }
+
+    private String uploadFileBase64(String pathFile, MultipartFile file){
+        String fileName = String.format("%s_%s", new Date().getTime(), file.getOriginalFilename());
+        try {
+            byte[] image = Base64.encodeBase64(file.getBytes());
+            String imageBase64 = new String(image);
+            byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(imageBase64);
+
+            // Creating the directory to store file
+            File dir = new File(pathFile);
+            if (!dir.exists())
+                dir.mkdirs();
+
+            // Create the file on server
+            File serverFile = new File(pathFile + fileName);
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+            stream.write(imageBytes);
+            stream.close();
+
+            return pathFile + fileName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "false";
+    }
+
+    private String uploadFileDefault(String pathFile, MultipartFile file){
+        String fileName = String.format("%s_%s", new Date().getTime(), file.getOriginalFilename());
+        try {
+            byte[] bytes = file.getBytes();
+
+            // Creating the directory to store file
+            File dir = new File(pathFile);
+            if (!dir.exists())
+                dir.mkdirs();
+
+            // Create the file on server
+            File serverFile = new File(pathFile + fileName);
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+
+            return pathFile + fileName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "false";
     }
 
 }
