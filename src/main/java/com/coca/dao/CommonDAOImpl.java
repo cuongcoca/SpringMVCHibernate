@@ -1,10 +1,10 @@
 package com.coca.dao;
 
-import com.coca.model.Contacts;
-import com.coca.model.Person;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,26 +14,14 @@ import java.util.List;
 @Repository
 @Transactional
 public class CommonDAOImpl implements CommonDAO{
+    private static final Logger logger = LoggerFactory.getLogger(CommonDAOImpl.class);
     @Autowired
     SessionFactory sessionFactory;
 
-//    @Override
-//    public <T> T findById(Class<T> type, long id) {
-//        Session session = sessionFactory.getCurrentSession();
-//        String sql = "select * from :Class where id = :id";
-//        Query query = session.createSQLQuery(sql).addEntity(type);
-//        query.setParameter("Class", type).setParameter("id", id);
-//        List<T> list = query.list();
-//        if(list != null && !list.isEmpty()) {
-//            return list.get(0);
-//        } else {
-//            return null;
-//        }
-//    }
-
-
     @Override
     public <T> List<T> getAll(Class<T> clazz) {
+        logger.info("getAll " + clazz.getName());
+
         Session session = this.sessionFactory.getCurrentSession();
         List<T> list = session.createQuery("from " + clazz.getName()).list();
         return list;
@@ -58,6 +46,18 @@ public class CommonDAOImpl implements CommonDAO{
             Session session = sessionFactory.getCurrentSession();
             session.persist(o);
             session.flush();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return o;
+    }
+
+    @Override
+    public <T> T update(T o) {
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            session.update(o);
+//            session.flush();
         } catch (Exception e){
             e.printStackTrace();
         }

@@ -43,6 +43,28 @@
             </tr>
         </table>
     </form>
+
+        Danh sách Ảnh
+        <table border="1">
+            <tr>
+                <th>STT</th>
+                <th>Tên file</th>
+                <th>Đường dẫn</th>
+                <th>productId</th>
+                <th>userId</th>
+                <th>Ngày tạo</th>
+                <th>#</th>
+            </tr>
+            <tr ng-repeat="item in listData track by $index">
+                <th>{{$index + 1}}</th>
+                <th>{{item.fileName}}</th>
+                <th>{{item.url}}</th>
+                <th>{{item.productId}}</th>
+                <th>{{item.userId}}</th>
+                <th>{{item.genDate | date: 'dd/MM/yyyy HH:mm:ss'}}</th>
+                <th>{{item.id}}</th>
+            </tr>
+        </table>
 </div>
 </body>
 </html>

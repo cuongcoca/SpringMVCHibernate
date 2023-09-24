@@ -24,7 +24,7 @@ public class ImageUpload {
     private Long productId;
 
     @Column(name = "USER_ID")
-    private Long userID;
+    private Long userId;
 
     @Column(name = "GEN_DATE")
     private Date genDate;

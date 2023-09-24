@@ -2,40 +2,18 @@ var app = angular.module('myApp', []);
 app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.file = null;
 
+    $scope.loadListData = function () {
+        $http.get("search", {
+            params: {}
+        }).then(function (response) {
+            if (response != null && response.status == 200) {
+                $scope.listData = response.data;
+            }
+        })
+    }
+
     $scope.uploadFile = function () {
 
-        // var form = new FormData();
-        // var file = $scope.file;
-        // form.append("file", file);
-        // // var jsonStr = JSON.stringify($scope.detailObj);
-        // // form.append("newsDetailStr", jsonStr);
-        // var settings = {
-        //     "async": true,
-        //     "crossDomain": true,
-        //     "url": preUrl + "/upload-file/upload",
-        //     "method": "POST",
-        //     "headers": {},
-        //     "processData": false,
-        //     "contentType": false,
-        //     "mimeType": "multipart/form-data",
-        //     "data": form
-        // };
-        //
-        // $.ajax(settings).done(function (response) {
-        //     switch (Number(response)) {
-        //         case 1:
-        //             // toastr.success("Lưu thành công!");
-        //             break;
-        //         case -1:
-        //             // toastr.error("Lưu thất bại!");
-        //             $('#btnUpload').removeAttr('disabled');
-        //             break;
-        //         default:
-        //             // toastr.error("Lưu thất bại!");
-        //             $('#btnUpload').removeAttr('disabled');
-        //             break;
-        //     }
-        // });
     }
 
     $scope.fileValidate = function () {
@@ -63,4 +41,6 @@ app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {
             return false;
         }
     };
+
+    $scope.loadListData();
 }]);

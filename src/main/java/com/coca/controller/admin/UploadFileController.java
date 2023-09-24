@@ -39,6 +39,7 @@ public class UploadFileController {
     public String upload(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
             boolean checkUploadSuccess = false;
+            String fileName = String.format("%s_%s", new Date().getTime(), file.getOriginalFilename());
             try {
                 byte[] bytes = file.getBytes();
 
@@ -48,7 +49,7 @@ public class UploadFileController {
                     dir.mkdirs();
 
                 // Create the file on server
-                File serverFile = new File(pathFile + file.getOriginalFilename());
+                File serverFile = new File(pathFile + fileName);
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
                 stream.write(bytes);
                 stream.close();
@@ -61,8 +62,8 @@ public class UploadFileController {
             if(checkUploadSuccess){
                 ImageUpload uploadFile = new ImageUpload();
                 uploadFile.setFileName(file.getOriginalFilename());
-                uploadFile.setUrl(pathFile + file.getOriginalFilename());
-                uploadFile.setUserID(1L);
+                uploadFile.setUrl(pathFile + fileName);
+                uploadFile.setUserId(1L);
                 uploadFile.setProductId(1L);
                 uploadFile.setGenDate(new Date());
 
