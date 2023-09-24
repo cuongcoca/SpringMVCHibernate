@@ -18,18 +18,25 @@
 </head>
 <body>
 <div ng-app="myApp" ng-controller="myCtrl">
-<%--    <input type="file" name="file" id="file"--%>
-<%--           class="filestyle" data-icon="false"--%>
-<%--           onchange="angular.element(this).scope().fileValidate()"--%>
-<%--           data-classButton="btn btn-default" accept="image/*"--%>
-<%--           data-classInput="form-control inline input-s"/>--%>
-<%--    <button class="btn" id="btnUpload" ng-click="uploadFile()">uploadFile</button>--%>
+    <%--    <input type="file" name="file" id="file"--%>
+    <%--           class="filestyle" data-icon="false"--%>
+    <%--           onchange="angular.element(this).scope().fileValidate()"--%>
+    <%--           data-classButton="btn btn-default" accept="image/*"--%>
+    <%--           data-classInput="form-control inline input-s"/>--%>
+    <%--    <button class="btn" id="btnUpload" ng-click="uploadFile()">uploadFile</button>--%>
 
     <form method="POST" action="<%=request.getContextPath()%>/upload-file/upload" enctype="multipart/form-data">
         <table>
             <tr>
                 <td><input type="file" name="file"
-                           accept="image/*" /></td>
+                           onchange="angular.element(this).scope().fileValidate()"
+                           accept="image/*"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <img id="imgUp" style="width: 100px;height: auto;"
+                         src="<%=request.getContextPath()%>/">
+                <td>
             </tr>
             <tr>
                 <td><input type="submit" value="Submit"/></td>

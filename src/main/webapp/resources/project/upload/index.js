@@ -48,14 +48,13 @@ app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {
                 return false;
             } else {
                 $scope.file = files[0];
-                console.log($scope.file);
 
-                // var reader = new FileReader();
-                // reader.onload = function () {
-                //     var output = document.getElementById('imgUp');
-                //     output.src = reader.result;
-                // };
-                // reader.readAsDataURL(event.target.files[0]);
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var output = document.getElementById('imgUp');
+                    output.src = reader.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
             }
 
         } else {
