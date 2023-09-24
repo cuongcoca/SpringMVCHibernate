@@ -12,6 +12,10 @@ app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {
         })
     }
 
+    $scope.getSrcBase64Image = function (imageUrl) {
+        return "data:image/png;base64, " + imageUrl;
+    };
+
     $scope.uploadFile = function () {
 
     }

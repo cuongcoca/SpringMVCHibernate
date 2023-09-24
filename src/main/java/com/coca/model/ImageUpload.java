@@ -32,4 +32,7 @@ public class ImageUpload {
     @Column(name = "LAST_UPDATED")
     private Date lastUpdated;
 
+    @Column(name = "BASE64_IMG")
+    private String base64Img;
+
 }

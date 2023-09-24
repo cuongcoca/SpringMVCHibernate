@@ -54,6 +54,7 @@
                 <th>userId</th>
                 <th>Ngày tạo</th>
                 <th>#</th>
+                <th>#</th>
             </tr>
             <tr ng-repeat="item in listData track by $index">
                 <th>{{$index + 1}}</th>
@@ -63,6 +64,7 @@
                 <th>{{item.userId}}</th>
                 <th>{{item.genDate | date: 'dd/MM/yyyy HH:mm:ss'}}</th>
                 <th>{{item.id}}</th>
+                <th><img width="100px;" src="{{getSrcBase64Image(item.base64Img)}}"></th>
             </tr>
         </table>
 </div>
