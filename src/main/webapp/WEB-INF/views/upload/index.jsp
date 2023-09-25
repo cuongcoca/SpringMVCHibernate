@@ -73,7 +73,8 @@
                 <th>
                     <button style="float: left;margin-left: 10px;" ng-if="listData.pageNumber > 1" ng-click="loadPageData(1)">«</button>
                     <div style="float: left; margin-left: 10px;" ng-repeat="item in listData.pageList track by $index">
-                        <button ng-click="loadPageData($index +1)">{{$index + 1}}</button>
+                        <button style="color:mediumvioletred;" ng-if="item == listData.pageNumber" ng-click="loadPageData($index +1)">{{$index + 1}}</button>
+                        <button ng-if="item != listData.pageNumber" ng-click="loadPageData($index +1)">{{$index + 1}}</button>
                     </div>
                     <button style="float: left;margin-left: 10px;" ng-if="listData.pageNumber < listData.pageCount" ng-click="loadPageData(listData.pageCount)">»</button>
                 </th>
