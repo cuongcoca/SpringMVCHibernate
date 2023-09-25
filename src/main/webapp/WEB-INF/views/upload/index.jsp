@@ -15,6 +15,12 @@
     <script>
         let preUrl = '<%=request.getContextPath()%>';
     </script>
+    <style type="text/css">
+        .tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
+        .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;}
+        .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
+        .tg .tg-4eph{background-color:#f9f9f9}
+    </style>
 </head>
 <body>
 <div ng-app="myApp" ng-controller="myCtrl">
@@ -45,7 +51,7 @@
     </form>
 
         Danh sách Ảnh
-        <table border="1">
+        <table class="tg">
             <tr>
                 <th>STT</th>
                 <th>Tên file</th>
@@ -66,18 +72,21 @@
                 <td>{{item.id}}</td>
                 <td><img width="100px;" src="{{getSrcBase64Image(item.base64Img)}}"></td>
             </tr>
-        </table>
-        <table>
             <tr>
-                <th>Số bản ghi: {{listData.rowCount}}</th>
-                <th>
+                <td colspan="10" ng-show="listData.rowCount == 0" style="text-align: center">Không có dữ liệu</td>
+            </tr>
+        </table>
+        <table class="tg">
+            <tr>
+                <td>Số bản ghi: {{listData.rowCount}}</td>
+                <td>
                     <button style="float: left;margin-left: 10px;" ng-if="listData.pageNumber > 1" ng-click="loadPageData(1)">«</button>
                     <div style="float: left; margin-left: 10px;" ng-repeat="item in listData.pageList track by $index">
                         <button style="color:mediumvioletred;" ng-if="item == listData.pageNumber" ng-click="loadPageData($index +1)">{{$index + 1}}</button>
                         <button ng-if="item != listData.pageNumber" ng-click="loadPageData($index +1)">{{$index + 1}}</button>
                     </div>
                     <button style="float: left;margin-left: 10px;" ng-if="listData.pageNumber < listData.pageCount" ng-click="loadPageData(listData.pageCount)">»</button>
-                </th>
+                </td>
             </tr>
         </table>
 </div>
