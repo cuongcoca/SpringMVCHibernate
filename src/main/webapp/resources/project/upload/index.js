@@ -3,7 +3,7 @@ app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.listData = {};
 
     $scope.pageNumber = 1;
-    $scope.numberPerPage = 3;
+    $scope.numberPerPage = 5;
     $scope.file = null;
 
     $scope.search = function () {
@@ -61,7 +61,7 @@ app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {
 
     /*Trợ giúp tính toán số trang hiển thị khi hiện page*/
     function getPageList(pagingResult) {
-        var pageCount = Math.ceil(pagingResult.rowCount / pagingResult.numberPerPage);
+        pagingResult.pageCount = Math.ceil(pagingResult.rowCount / pagingResult.numberPerPage);
 
         var pages = [];
         var from = pagingResult.pageNumber - 3;
@@ -75,8 +75,8 @@ app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {
             from = 1;
         }
 
-        if (to > pageCount) {
-            to = pageCount;
+        if (to > pagingResult.pageCount) {
+            to = pagingResult.pageCount;
         }
 
         for (var i = from; i <= to; i++) {

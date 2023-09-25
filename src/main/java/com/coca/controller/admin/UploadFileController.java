@@ -32,7 +32,7 @@ public class UploadFileController {
     @RequestMapping("/search")
     @ResponseBody
     public ResponseEntity search(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
-                                 @RequestParam(value = "numberPerPage", required = false, defaultValue = "20") int numberPerPage){
+                                 @RequestParam(value = "numberPerPage", required = false, defaultValue = "5") int numberPerPage){
         PagingResult pagingResult = new PagingResult();
         pagingResult.setPageNumber(pageNumber);
         pagingResult.setNumberPerPage(numberPerPage);
