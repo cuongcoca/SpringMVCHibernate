@@ -1,5 +1,6 @@
 package com.coca.dao;
 
+import com.coca.model.PagingResult;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,6 +18,31 @@ public class CommonDAOImpl implements CommonDAO{
     private static final Logger logger = LoggerFactory.getLogger(CommonDAOImpl.class);
     @Autowired
     SessionFactory sessionFactory;
+
+    @Override
+    public <T> PagingResult getPage(PagingResult page, Class<T> clazz) {
+        Session session = this.sessionFactory.getCurrentSession();
+
+        try {
+            Query query = session.createQuery("from " + clazz.getName());
+            Query queryCount = session.createQuery("select count(o.id) from " + clazz.getName() + " o");
+
+            if(page.getPageNumber() > 0){
+                int offset = (page.getPageNumber() - 1) * page.getNumberPerPage();
+                query.setFirstResult(offset).setMaxResults(page.getNumberPerPage());
+
+                int rowCount = Integer.parseInt(queryCount.list().get(0).toString());
+                page.setRowCount(rowCount);
+            }
+
+            List<T> list = query.list();
+            page.setItems(list);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return page;
+    }
 
     @Override
     public <T> List<T> getAll(Class<T> clazz) {

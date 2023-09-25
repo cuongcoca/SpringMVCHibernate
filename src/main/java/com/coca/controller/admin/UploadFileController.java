@@ -2,6 +2,7 @@ package com.coca.controller.admin;
 
 import com.coca.dao.CommonDAO;
 import com.coca.model.ImageUpload;
+import com.coca.model.PagingResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,14 @@ public class UploadFileController {
 
     @RequestMapping("/search")
     @ResponseBody
-    public ResponseEntity search(){
-        List<ImageUpload> list = commonDAO.getAll(ImageUpload.class);
+    public ResponseEntity search(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+                                 @RequestParam(value = "numberPerPage", required = false, defaultValue = "20") int numberPerPage){
+        PagingResult pagingResult = new PagingResult();
+        pagingResult.setPageNumber(pageNumber);
+        pagingResult.setNumberPerPage(numberPerPage);
+
+        pagingResult = commonDAO.getPage(pagingResult, ImageUpload.class);
+        List<ImageUpload> list = (List<ImageUpload>) pagingResult.getItems();
         for(ImageUpload imageUpload : list){//show Img
             try {
                 byte[] fileContent = FileUtils.readFileToByteArray(new File(imageUpload.getUrl()));
@@ -41,7 +48,7 @@ public class UploadFileController {
                 e.printStackTrace();
             }
         }
-        return new ResponseEntity(list, HttpStatus.OK);
+        return new ResponseEntity(pagingResult, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)

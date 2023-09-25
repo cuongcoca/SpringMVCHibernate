@@ -1,13 +1,26 @@
 var app = angular.module('myApp', []);
 app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {
+    $scope.listData = {};
+
+    $scope.pageNumber = 1;
+    $scope.numberPerPage = 3;
     $scope.file = null;
 
-    $scope.loadListData = function () {
+    $scope.search = function () {
+        $scope.loadPageData(1);
+    }
+
+    $scope.loadPageData = function (pageNumber) {
+        $scope.pageNumber = pageNumber;
         $http.get("search", {
-            params: {}
+            params: {
+                "pageNumber": $scope.pageNumber,
+                "numberPerPage": $scope.numberPerPage
+            }
         }).then(function (response) {
             if (response != null && response.status == 200) {
                 $scope.listData = response.data;
+                $scope.listData.pageList = getPageList($scope.listData);
             }
         })
     }
@@ -46,5 +59,31 @@ app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {
         }
     };
 
-    $scope.loadListData();
+    /*Trợ giúp tính toán số trang hiển thị khi hiện page*/
+    function getPageList(pagingResult) {
+        var pageCount = Math.ceil(pagingResult.rowCount / pagingResult.numberPerPage);
+
+        var pages = [];
+        var from = pagingResult.pageNumber - 3;
+        var to = pagingResult.pageNumber + 5;
+        if (from < 0) {
+            to -= from;
+            from = 1;
+        }
+
+        if (from < 1) {
+            from = 1;
+        }
+
+        if (to > pageCount) {
+            to = pageCount;
+        }
+
+        for (var i = from; i <= to; i++) {
+            pages.push(i);
+        }
+        return pages;
+    }
+
+    $scope.search();
 }]);

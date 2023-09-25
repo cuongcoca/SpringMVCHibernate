@@ -53,10 +53,10 @@
                 <th>productId</th>
                 <th>userId</th>
                 <th>Ngày tạo</th>
-                <th>#</th>
+                <th>Id</th>
                 <th>#</th>
             </tr>
-            <tr ng-repeat="item in listData track by $index">
+            <tr ng-repeat="item in listData.items track by $index">
                 <th>{{$index + 1}}</th>
                 <th>{{item.fileName}}</th>
                 <th>{{item.url}}</th>
@@ -65,6 +65,16 @@
                 <th>{{item.genDate | date: 'dd/MM/yyyy HH:mm:ss'}}</th>
                 <th>{{item.id}}</th>
                 <th><img width="100px;" src="{{getSrcBase64Image(item.base64Img)}}"></th>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th>Số bản ghi: {{listData.rowCount}}</th>
+                <th>
+                    <div style="float: left; padding-left: 10px;" ng-repeat="item in listData.pageList track by $index">
+                        <button ng-click="loadPageData($index +1)">{{$index + 1}}</button>
+                    </div>
+                </th>
             </tr>
         </table>
 </div>
