@@ -9,20 +9,25 @@
 <html>
 <head>
     <title>Title</title>
+    <meta charset="UTF-8">
     <script src="<%=request.getContextPath()%>/resources/angular/angular.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <!-- Liên kết CSS Bootstrap -->
+    <link href="<%=request.getContextPath()%>/resources/vendor/bootstrap-4.5.0/css/bootstrap.min.css" type="text/css"
+          rel="stylesheet"/>
+    <!-- Liên kết Jquery -->
+    <script src="<%=request.getContextPath()%>/resources/vendor/jquery/jquery.min.js"></script>
+    <!-- Liên kết PopperJS -->
+    <script src="<%=request.getContextPath()%>/resources/vendor/popperjs/popper.min.js"></script>
+    <!-- Liên kết Bootstrap -->
+    <script src="<%=request.getContextPath()%>/resources/vendor/bootstrap-4.5.0/js/bootstrap.js"></script>
+
     <script src="<%=request.getContextPath()%>/resources/project/upload/index.js"></script>
     <script>
         let preUrl = '<%=request.getContextPath()%>';
     </script>
-    <style type="text/css">
-        .tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
-        .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;}
-        .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
-        .tg .tg-4eph{background-color:#f9f9f9}
-    </style>
 </head>
 <body>
+
 <div ng-app="myApp" ng-controller="myCtrl">
     <%--    <input type="file" name="file" id="file"--%>
     <%--           class="filestyle" data-icon="false"--%>
@@ -31,64 +36,102 @@
     <%--           data-classInput="form-control inline input-s"/>--%>
     <%--    <button class="btn" id="btnUpload" ng-click="uploadFile()">uploadFile</button>--%>
 
-    <form method="POST" action="<%=request.getContextPath()%>/upload-file/upload" enctype="multipart/form-data">
-        <table>
-            <tr>
-                <td><input type="file" name="file"
+    <div class="container">
+        <div class="row" style="padding-top: 30px;">
+            <div class="col-lg-6">
+            <form method="POST" action="<%=request.getContextPath()%>/upload-file/upload" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input class="form-control" style="border: none" type="file" name="file"
                            onchange="angular.element(this).scope().fileValidate()"
-                           accept="image/*"/></td>
-            </tr>
-            <tr>
-                <td>
+                           accept="image/*"/>
+                </div>
+                <div class="form-group">
                     <img id="imgUp" style="width: 100px;height: auto;"
                          src="<%=request.getContextPath()%>/">
-                <td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="Submit"/></td>
-            </tr>
-        </table>
-    </form>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-primary mb-3" type="submit" value="Upload"/>
+                </div>
+            </form>
+            </div   >
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <label>Danh sách Ảnh</label>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="bg-gray">
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên file</th>
+                            <th>Đường dẫn</th>
+                            <th>productId</th>
+                            <th>userId</th>
+                            <th>Ngày tạo</th>
+                            <th>Id</th>
+                            <th>#</th>
+                        </tr>
+                        </thead>
+                        <tr ng-repeat="item in listData.items track by $index">
+                            <td>{{(listData.pageNumber - 1) * listData.numberPerPage + $index + 1}}</td>
+                            <td>{{item.fileName}}</td>
+                            <td>{{item.url}}</td>
+                            <td>{{item.productId}}</td>
+                            <td>{{item.userId}}</td>
+                            <td>{{item.genDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                            <td>{{item.id}}</td>
+                            <td><img width="100px;"
+                                     src="<%=request.getContextPath()%>/upload-file/files/{{item.fileName}}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="10" ng-show="listData.rowCount == 0" style="text-align: center">Không có dữ
+                                liệu
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-        Danh sách Ảnh
-        <table class="tg">
-            <tr>
-                <th>STT</th>
-                <th>Tên file</th>
-                <th>Đường dẫn</th>
-                <th>productId</th>
-                <th>userId</th>
-                <th>Ngày tạo</th>
-                <th>Id</th>
-                <th>#</th>
-            </tr>
-            <tr ng-repeat="item in listData.items track by $index">
-                <td>{{(listData.pageNumber - 1) * listData.numberPerPage + $index + 1}}</td>
-                <td>{{item.fileName}}</td>
-                <td>{{item.url}}</td>
-                <td>{{item.productId}}</td>
-                <td>{{item.userId}}</td>
-                <td>{{item.genDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
-                <td>{{item.id}}</td>
-                <td><img width="100px;" src="<%=request.getContextPath()%>/upload-file/files/{{item.fileName}}"></td>
-            </tr>
-            <tr>
-                <td colspan="10" ng-show="listData.rowCount == 0" style="text-align: center">Không có dữ liệu</td>
-            </tr>
-        </table>
-        <table class="tg">
-            <tr>
-                <td>Số bản ghi: {{listData.rowCount}}</td>
-                <td>
-                    <button style="float: left;margin-left: 10px;" ng-if="listData.pageNumber > 1" ng-click="loadPageData(1)">«</button>
-                    <div style="float: left; margin-left: 10px;" ng-repeat="item in listData.pageList track by $index">
-                        <button style="color:mediumvioletred;" ng-if="item == listData.pageNumber" ng-click="loadPageData($index +1)">{{$index + 1}}</button>
-                        <button ng-if="item != listData.pageNumber" ng-click="loadPageData($index +1)">{{$index + 1}}</button>
-                    </div>
-                    <button style="float: left;margin-left: 10px;" ng-if="listData.pageNumber < listData.pageCount" ng-click="loadPageData(listData.pageCount)">»</button>
-                </td>
-            </tr>
-        </table>
+        <div class="row">
+            <div class="col-lg-6">
+                <label>Số bản ghi: {{listData.rowCount}}</label>
+            </div>
+            <div class="col-lg-6">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination float-right">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous"
+                               ng-if="listData.pageNumber > 1"
+                               ng-click="loadPageData(1)">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li ng-repeat="item in listData.pageList track by $index" class="page-item">
+                            <a style="color: mediumvioletred;" ng-if="item == listData.pageNumber"
+                               ng-click="loadPageData($index +1)"
+                               class="page-link" href="#">{{item}}</a>
+                            <a ng-if="item != listData.pageNumber"
+                               ng-click="loadPageData($index +1)"
+                               class="page-link" href="#">{{item}}</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next"
+                               ng-if="listData.pageNumber < listData.pageCount"
+                               ng-click="loadPageData(listData.pageCount)">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 </body>
 </html>
