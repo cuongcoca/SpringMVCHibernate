@@ -46,7 +46,7 @@
                            accept="image/*"/>
                 </div>
                 <div class="form-group">
-                    <img id="imgUp" style="width: 100px;height: auto;"
+                    <img id="imgUp" style="width: 150px;height: auto;"
                          src="<%=request.getContextPath()%>/">
                 </div>
                 <div class="form-group">
@@ -60,27 +60,27 @@
                 <label>Danh sách Ảnh</label>
                 <div class="table-responsive">
                     <table class="table table-hover">
-                        <thead class="bg-gray">
-                        <tr>
-                            <th>STT</th>
-                            <th>Tên file</th>
-                            <th>Đường dẫn</th>
-                            <th>productId</th>
-                            <th>userId</th>
-                            <th>Ngày tạo</th>
-                            <th>Id</th>
-                            <th>#</th>
+                        <thead>
+                        <tr class="table-active">
+                            <th class="text-center">STT</th>
+                            <th class="text-center">Tên file</th>
+                            <th class="text-center">Đường dẫn</th>
+                            <th class="text-center">productId</th>
+                            <th class="text-center">userId</th>
+                            <th class="text-center">Ngày tạo</th>
+                            <th class="text-center">Id</th>
+                            <th class="text-center">#</th>
                         </tr>
                         </thead>
                         <tr ng-repeat="item in listData.items track by $index">
-                            <td>{{(listData.pageNumber - 1) * listData.numberPerPage + $index + 1}}</td>
-                            <td>{{item.fileName}}</td>
-                            <td>{{item.url}}</td>
-                            <td>{{item.productId}}</td>
-                            <td>{{item.userId}}</td>
-                            <td>{{item.genDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
-                            <td>{{item.id}}</td>
-                            <td><img width="100px;"
+                            <td class="text-center">{{(listData.pageNumber - 1) * listData.numberPerPage + $index + 1}}</td>
+                            <td class="text-left" style="max-width:250px;word-wrap: break-word">{{item.fileName}}</td>
+                            <td class="text-left" style="max-width:300px;word-wrap: break-word">{{item.url}}</td>
+                            <td class="text-left">{{item.productId}}</td>
+                            <td class="text-left">{{item.userId}}</td>
+                            <td class="text-left">{{item.genDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                            <td class="text-left">{{item.id}}</td>
+                            <td class="text-center"><img width="100px;"
                                      src="<%=request.getContextPath()%>/upload-file/files/{{item.fileName}}">
                             </td>
                         </tr>
