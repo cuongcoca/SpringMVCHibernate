@@ -21,6 +21,10 @@
     <!-- Liên kết Bootstrap -->
     <script src="<%=request.getContextPath()%>/resources/vendor/bootstrap-4.5.0/js/bootstrap.js"></script>
 
+    <!-- Liên kết Toastr -->
+    <link href="<%=request.getContextPath()%>/resources/ajax/libs/toastr.min.css" type="text/css" rel="stylesheet"/>
+    <script src="<%=request.getContextPath()%>/resources/ajax/libs/toastr.min.js"></script>
+
     <script src="<%=request.getContextPath()%>/resources/project/upload/index.js"></script>
     <script>
         let preUrl = '<%=request.getContextPath()%>';

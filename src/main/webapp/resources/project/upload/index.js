@@ -21,6 +21,8 @@ app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {
             if (response != null && response.status == 200) {
                 $scope.listData = response.data;
                 $scope.listData.pageList = getPageList($scope.listData);
+
+                toastr.info("success!");
             }
         })
     }
