@@ -70,7 +70,7 @@
                 <td>{{item.userId}}</td>
                 <td>{{item.genDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
                 <td>{{item.id}}</td>
-                <td><img width="100px;" src="{{getSrcBase64Image(item.base64Img)}}"></td>
+                <td><img width="100px;" src="<%=request.getContextPath()%>/upload-file/files/{{item.fileName}}"></td>
             </tr>
             <tr>
                 <td colspan="10" ng-show="listData.rowCount == 0" style="text-align: center">Không có dữ liệu</td>

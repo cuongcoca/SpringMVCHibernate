@@ -6,6 +6,7 @@ import com.coca.model.PagingResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -38,16 +39,6 @@ public class UploadFileController {
         pagingResult.setNumberPerPage(numberPerPage);
 
         pagingResult = commonDAO.getPage(pagingResult, ImageUpload.class);
-        List<ImageUpload> list = (List<ImageUpload>) pagingResult.getItems();
-        for(ImageUpload imageUpload : list){//show Img
-            try {
-                byte[] fileContent = FileUtils.readFileToByteArray(new File(imageUpload.getUrl()));
-                byte[] encodedByte = Base64.encodeBase64(fileContent);
-                imageUpload.setBase64Img(new String(encodedByte));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         return new ResponseEntity(pagingResult, HttpStatus.OK);
     }
 
@@ -56,11 +47,11 @@ public class UploadFileController {
         ImageUpload uploadFile = new ImageUpload();
 
         if (!file.isEmpty()) {
-            String urlUpload = uploadFileBase64(pathFile, file);
+            String fileNameUpload = uploadFileBase64(pathFile, file);
 
-            if(!urlUpload.equals("false")){
-                uploadFile.setFileName(file.getOriginalFilename());
-                uploadFile.setUrl(urlUpload);
+            if(!fileNameUpload.equals("false")){
+                uploadFile.setFileName(fileNameUpload);
+                uploadFile.setUrl(pathFile + fileNameUpload);
                 uploadFile.setUserId(1L);
                 uploadFile.setProductId(1L);
                 uploadFile.setGenDate(new Date());
@@ -69,6 +60,12 @@ public class UploadFileController {
             }
         }
         return "redirect:/upload-file/index.html";
+    }
+
+    @RequestMapping(value = "/files/{file_name:.+}", method = RequestMethod.GET)
+    @ResponseBody
+    public FileSystemResource getFile(@PathVariable("file_name") String file_name) {
+        return new FileSystemResource(pathFile + file_name);
     }
 
     private String uploadFileBase64(String pathFile, MultipartFile file){
@@ -89,7 +86,7 @@ public class UploadFileController {
             stream.write(imageBytes);
             stream.close();
 
-            return pathFile + fileName;
+            return fileName;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -117,6 +114,17 @@ public class UploadFileController {
             e.printStackTrace();
         }
         return "false";
+    }
+
+    private String getStringBase64File(String urlFile){
+        try {
+            byte[] fileContent = FileUtils.readFileToByteArray(new File(urlFile));
+            byte[] encodedByte = Base64.encodeBase64(fileContent);
+            return new String(encodedByte);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
