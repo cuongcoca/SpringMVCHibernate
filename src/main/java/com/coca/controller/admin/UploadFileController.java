@@ -10,12 +10,13 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping("/upload-file")
@@ -62,10 +63,27 @@ public class UploadFileController {
         return "redirect:/upload-file/index.html";
     }
 
+    @RequestMapping(value = "/dowload/{file_name:.+}", method = RequestMethod.GET)
+    @ResponseBody
+    public void dowloadFile(@PathVariable("file_name") String fileName, HttpServletResponse response) {
+        try {
+            File file = new File(pathFile + fileName);
+            byte[] data = FileUtils.readFileToByteArray(file);
+            // Thiết lập thông tin trả về
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-disposition", "attachment; filename=" + file.getName());
+            response.setContentLength(data.length);
+            InputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(data));
+            FileCopyUtils.copy(inputStream, response.getOutputStream());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @RequestMapping(value = "/files/{file_name:.+}", method = RequestMethod.GET)
     @ResponseBody
-    public FileSystemResource getFile(@PathVariable("file_name") String file_name) {
-        return new FileSystemResource(pathFile + file_name);
+    public FileSystemResource getFile(@PathVariable("file_name") String fileName) {
+        return new FileSystemResource(pathFile + fileName);
     }
 
     private String uploadFileBase64(String pathFile, MultipartFile file){

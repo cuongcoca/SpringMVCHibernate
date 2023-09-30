@@ -10,6 +10,7 @@
 <head>
     <title>Title</title>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="<%=request.getContextPath()%>/resources/image/about-logo.png"/>
     <script src="<%=request.getContextPath()%>/resources/angular/angular.min.js"></script>
     <!-- Liên kết CSS Bootstrap -->
     <link href="<%=request.getContextPath()%>/resources/vendor/bootstrap-4.5.0/css/bootstrap.min.css" type="text/css"
@@ -31,7 +32,6 @@
     </script>
 </head>
 <body>
-
 <div ng-app="myApp" ng-controller="myCtrl">
     <%--    <input type="file" name="file" id="file"--%>
     <%--           class="filestyle" data-icon="false"--%>
@@ -43,21 +43,22 @@
     <div class="container">
         <div class="row" style="padding-top: 30px;">
             <div class="col-lg-6">
-            <form method="POST" action="<%=request.getContextPath()%>/upload-file/upload" enctype="multipart/form-data">
-                <div class="form-group">
-                    <input class="form-control" style="border: none" type="file" name="file"
-                           onchange="angular.element(this).scope().fileValidate()"
-                           accept="image/*"/>
-                </div>
-                <div class="form-group">
-                    <img id="imgUp" style="width: 150px;height: auto;"
-                         src="<%=request.getContextPath()%>/">
-                </div>
-                <div class="form-group">
-                    <input class="btn btn-primary mb-3" type="submit" value="Upload"/>
-                </div>
-            </form>
-            </div   >
+                <form method="POST" action="<%=request.getContextPath()%>/upload-file/upload"
+                      enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input class="form-control" style="border: none" type="file" name="file"
+                               onchange="angular.element(this).scope().fileValidate()"
+                               accept="image/*"/>
+                    </div>
+                    <div class="form-group">
+                        <img id="imgUp" style="width: 150px;height: auto;"
+                             src="<%=request.getContextPath()%>/">
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary mb-3" type="submit" value="Upload"/>
+                    </div>
+                </form>
+            </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
@@ -77,14 +78,18 @@
                         </tr>
                         </thead>
                         <tr ng-repeat="item in listData.items track by $index">
-                            <td class="text-center">{{(listData.pageNumber - 1) * listData.numberPerPage + $index + 1}}</td>
+                            <td class="text-center">
+                                {{(listData.pageNumber - 1) * listData.numberPerPage + $index + 1}}
+                            </td>
                             <td class="text-left" style="max-width:250px;word-wrap: break-word">{{item.fileName}}</td>
                             <td class="text-left" style="max-width:300px;word-wrap: break-word">{{item.url}}</td>
                             <td class="text-left">{{item.productId}}</td>
                             <td class="text-left">{{item.userId}}</td>
                             <td class="text-left">{{item.genDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
                             <td class="text-left">{{item.id}}</td>
-                            <td class="text-center"><img width="100px;"
+                            <td class="text-center">
+                                <img ng-click="viewFullImg(item.fileName)"
+                                     style="cursor: pointer;" width="100px;"
                                      src="<%=request.getContextPath()%>/upload-file/files/{{item.fileName}}">
                             </td>
                         </tr>
@@ -97,7 +102,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-lg-6">
                 <label>Số bản ghi: {{listData.rowCount}}</label>
@@ -133,7 +137,39 @@
                 </nav>
             </div>
         </div>
+    </div>
 
+    <div class="modal fade" id="modalDetail" role="dialog" aria-hidden="true" data-keyboard="false"
+         data-backdrop="static" style="text-align: center">
+        <div class="modal-dialog">
+            <div class="modal-content" style="text-align: center;">
+                <div class="modal-header  text-left">
+                    <button class="close" data-dismiss="modal"
+                            aria-hidden="true">&times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img width="90%;"
+                                 src="<%=request.getContextPath()%>/upload-file/files/{{fileNameDetail}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row" style="text-align: center">
+                        <div class="col-md-12" style="text-align: center">
+                            <a class="btn btn-outline-primary"
+                               ng-click="dowloadImg(fileNameDetail)">Tải ảnh
+                            </a>
+                            <a class="btn btn-light"
+                               data-dismiss="modal">Đóng
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
